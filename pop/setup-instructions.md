@@ -19,24 +19,36 @@ First we navigate to the `dotfiles/scripts/setup` directory and execute the foll
 
 To setup a (subjectively improved)default directory structure for our user account. It also removes the capitalized default directories and updates the desktop environment to point to the newly created directories
 
-- `setup-home-structure.sh`
+```bash
+# Assuming you are in the direcotry of the script
+./setup-home-structure.sh
+```
 
 The next script is for installing a few default packages which I find useful, you might want to tweak the array of packages before executing
 
-- `setup-default-packages.sh`
+```bash
+# Assuming you are in the direcotry of the script
+./setup-default-packages.sh
+```
 
 The next step is to change our default user shell to `zsh` and configure it
 Install zsh
 
-- `sudo apt install zsh`
+```bash
+sudo apt install zsh
+```
 
 Check if the binary is available and with which path
 
-- `cat /etc/shells`
+```bash
+cat /etc/shells
+```
 
 Update the shell with the `chsh` command according to the path form the above command (propably `/bin/zsh`)
 
-- `chsh -s /bin/zsh`
+```bash
+chsh -s /bin/zsh
+```
 
 Relog or Reboot your System!
 Optially call Extensions with the launcher and disable Desktop Icons (I hate them)
@@ -45,7 +57,9 @@ Now it is time to configure zsh, i recently switched to zap-zsh and therefore wi
 
 Install [zsh-zap](https://github.com/zap-zsh/zap)
 
-- `zsh <(curl -s https://raw.githubusercontent.com/zap-zsh/zap/master/install.zsh)`
+```bash
+zsh <(curl -s https://raw.githubusercontent.com/zap-zsh/zap/master/install.zsh)
+```
 
 Base configruation to overwrite .zshrc be sure to double check the plugins (vim is tricky)
 
@@ -74,64 +88,115 @@ plug "zettlrobert/simple-prompt"
 export EDITOR=nvim
 ```
 
-- `source ~/.zshrc`
-- `zap update`
+Source and shell configuraiton and install zap plugins
+
+```bash
+source ~/.zshrc
+zap update
+```
 
 Finally (this could very well be the first step)let's continue with some development prerequesites
 Check and update to latest version of git
 
-- `sudo add-apt-repository ppa:git-core/ppa`
-- `sudo apt update`
-- `sudo apt install git`
+```bash
+sudo add-apt-repository ppa:git-core/ppa
+
+sudo apt update
+
+sudo apt install git
+```
 
 Configure your system with the right git defaults either edit `.gitconfig` in your home directory or use the following commands to set some defaults
 
-- `git config --global user.name "FIRST_NAME LAST_NAME"`
-- `git config --global user.email "name@example.com"`
+```bash
+# Replace with the name that should be associated with the code
+git config --global user.name "FIRST_NAME LAST_NAME"
+
+# Replace with the name that should be associated with the code
+git config --global user.email "name@example.com"
+```
 
 ## Setup ssh and add key to github
 
 Generate key with
 
-- `ssh-keygen`
+```bash
+ssh-keygen
+```
 
 Start ssh-agent
 
-- `$ eval "$(ssh-agent -s)"`
+```bash
+eval "$(ssh-agent -s)"
+```
 
 Add key to the ssh agent
 
-- `ssh-add ~/.ssh/id_rsa`
+```bash
+ssh-add ~/.ssh/id_rsa
+```
+
+## Setup Node Version Manager and Node
 
 Install Node Version Manager to have an easy time switching between different node versions.
 The version you install now will be the default nvm references, to change that refer to the nvm manual
 
-- `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash`
-- `source ~/.zshrc`
-- `nvm install node`
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
+source ~/.zshrc
+nvm install node
+```
 
 Gloally activate pnpm
 
-- `corepack enable && corepack prepare pnpm@latest --activate`
+```bash
+corepack enable && corepack prepare pnpm@latest --activate
+```
 
 Configure the gloal store and add it to the path
 
-- `pnpm setup`
+```bash
+pnpm setup
+```
 
-Install bat, an improved cat
+## Btm
 
-- `./install_bat.sh`
+Install btm, an improved top
 
-Install btm, an improed top
+```bash
+# This has to be updated curl latest release and install it
+# - `curl -LO https://github.com/ClementTsang/bottom/releases/download/0.8.0/bottom_0.8.0_amd64.deb sudo dpkg -i bottom_0.8.0_amd64.deb`
+# - `rm bottom_0.8.0_amd64.deb`
+```
 
-- `curl -LO https://github.com/ClementTsang/bottom/releases/download/0.8.0/bottom_0.8.0_amd64.deb sudo dpkg -i bottom_0.8.0_amd64.deb`
-- `rm bottom_0.8.0_amd64.deb`
+## Useful Aliases
+
+```bash
+# Bat package name is already used so bat is batcat -> we alias it
+echo "alias bat='batcat'" >> .zshrc
+
+# Pretty list with everything in directory
+echo "alias ll='exa --icons --long -a --group --header --bytes'" >> .zshrc
+
+# Pretty file output
+echo "alias lexa='exa --icons --long -a --group --header --bytes'"  >> .zshrc
+
+# Copy current path to clipboard (xclip) required
+echo "alias ypp='pwd | xclip -selection clipboard'" >> .zshrc
+
+# Git Aliases
+echo "alias pretty-git-log='git log --pretty=oneline --graph --decorate --all'" >> .zshrc
+echo "alias gdiff='git diff | batcat'" >> .zshrc
+
+# Fzf with preview
+echo "alias fzfp="fzf --preview 'bat --color=always {}'"" >> .zshrc
+```
 
 ## Docker
 
 Docker can be setup in multiple ways, refer to the offical instructions on how to install docker and which post installation setps (running without root privileges) are recommended
 
-- Install prerequesites
+Install prerequesites
 
 ```bash
 sudo apt-get install \
@@ -141,14 +206,14 @@ sudo apt-get install \
     lsb-release
 ```
 
-- Add official Docker GPG Key
+Add official Docker GPG Key
 
 ```bash
 sudo mkdir -p /etc/apt/keyrings
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
 ```
 
-- Setup the Repository
+Setup the Repository
 
 ```bash
 echo \
@@ -158,14 +223,17 @@ echo \
 
 If there are GPG errors when updating the repository list, double check with the installation instructions on the official page
 
-- `sudo apt update`
-
-- `sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin`
+```bash
+sudo apt update
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+```
 
 To use docker as a non root user, we have to create the docker group and add our user to it, after the user is added we have to relog to apply the changes
 
-- `sudo groupadd docker`
-- `sudo usermod -aG docker $USER`
+```bash
+sudo groupadd docker
+sudo usermod -aG docker $USER
+```
 
 ### Gnome Extensions
 
