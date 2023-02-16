@@ -181,13 +181,45 @@ function overwrite_zsh_config {
 	verify_command "updating .zshrc" "$exitCode"
 }
 
+function set_git_config {
+	echo -e "Please provide your git user name"
+	read -r username
+	git config --global user.name "$username"
+	exitCodeUserName=$?
+	verify_command "set git user name" $exitCodeUserName
+
+	echo -e "Please provide your git email"
+	read -r email
+	git config --global user.email "$email"
+	exitCodeUserEmail=$?
+	verify_command "set git user email" $exitCodeUserEmail
+
+	git config --global init.defaultBranch main
+	exitCodeDefaultBranch=$?
+	verify_command "set git default branch to main" $exitCodeDefaultBranch
+
+	git config --global pull.ff only
+	exitCodeFFOnly=$?
+	verify_command "set pull fast forward only" $exitCodeFFOnly
+}
+set_git_config
+
+function create_ssh_keys {
+	echo -e "Please confirm defaults\n"
+	# Generate Key
+	ssh-keygen -f "$HOME"/.ssh/id_rsa
+
+	# Start ssh-agent
+	eval "$(ssh-agent -s)"
+
+	# Add generated key to ssh agent
+	ssh-add "$HOME"/.ssh/id_rsa
+}
+
 echo -e "Tasks\n\
   - Reboot to apply changes
   - Run zap update
   - Switch Keyboard Shurtcuts, (super for workspace overview)\n\
-  - Update github ssh keys with: .ssh/id_rsa.pub
+  - Update github ssh keys with, located in \$HOME/.ssh/id_rsa.pub
   - Adjust download folder in tools(browser) to downloads instead of Downloads
 "
-
-# TODO:
-# update function
