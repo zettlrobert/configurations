@@ -11,7 +11,7 @@ export lightgreen='\x1b[1;32m'
 export lightgray='\x1b[1;37m'
 export NC='\x1b[0m'
 
-DIR="${BASH_SOURCE%/*}"
+#DIR="${BASH_SOURCE%/*}"
 
 function verify_command {
 	message=$1
@@ -87,6 +87,56 @@ function update_xdg_user_dirs {
 remove_base_directories
 create_new_directories
 update_xdg_user_dirs
+
+function install_default_packages {
+	PACKAGES=(
+		# Tools
+		"ranger"
+		"ripgrep"
+		"xclip"
+		"exa"
+		"timeshift"
+		"deja-dup"
+		"neofetch"
+		"openssh-server"
+		"code"
+		"cifs-utils"
+		"nmap"
+		# NTFS
+		"fuse"
+		"ntfs-3g"
+		# Media
+		"ffmpeg"
+		"webp" # Convert webp to png
+		# Archives
+		"zip"
+		"unzip"
+		# Theming
+		"gtk2-engines-murrine"
+		"gnome-tweaks"
+		# Fonts
+		"fonts-powerline"
+		"fonts-firacode"
+		# Nvim prerequisites
+		"ninja-build"
+		"gettext"
+		"libtool"
+		"libtool-bin"
+		"autoconf"
+		"automake"
+		"cmake"
+		"g++"
+		"pkg-config"
+	)
+
+	for package in "${PACKAGES[@]}"; do
+		sudo apt install "$package" -y
+		exitCode=$?
+		verify_command "$package installation" $exitCode
+	done
+}
+
+install_default_packages
 
 echo -e "Tasks\n\
   - Switch Keyboard Shurtcuts, (super for workspace overview)\n\
