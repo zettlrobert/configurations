@@ -81,7 +81,7 @@ function update_xdg_user_dirs {
 	verify_command "removing user-dirs.dirs" $exitCodeRmUserDirs
 
 	# Copy user.user-dirs.dirs from assets
-	cp "$DIR"/assets/user-dirs.dirs "$HOME"/.config
+	cp "$HOME"/configurations/pop/assets/user-dirs.dirs "$HOME"/.config
 }
 
 remove_base_directories
