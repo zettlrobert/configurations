@@ -91,6 +91,7 @@ update_xdg_user_dirs
 function install_default_packages {
 	PACKAGES=(
 		# Tools
+		"zsh"
 		"ranger"
 		"ripgrep"
 		"xclip"
@@ -138,7 +139,16 @@ function install_default_packages {
 
 install_default_packages
 
+function change_shell_zsh {
+	chsh -s $(which zsh)
+	exitCode=$?
+	verify_command "changing shell to zsh" $exitCode
+}
+
+change_shell_zsh
+
 echo -e "Tasks\n\
+  - Reboot to apply changes
   - Switch Keyboard Shurtcuts, (super for workspace overview)\n\
   - Update github ssh keys with: .ssh/id_rsa.pub
   - Adjust download folder in tools(browser) to downloads instead of Downloads
