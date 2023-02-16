@@ -3,15 +3,9 @@
 # Colors to use in the script
 export red='\x1b[0;31m'
 export green='\x1b[0;32m'
-export yellow='\x1b[0;33m'
-export lightblue='\x1b[1;34m'
 export purple='\x1b[0;35m'
 export cyan='\x1b[0;36m'
-export lightgreen='\x1b[1;32m'
-export lightgray='\x1b[1;37m'
 export NC='\x1b[0m'
-
-#DIR="${BASH_SOURCE%/*}"
 
 function verify_command {
 	message=$1
@@ -57,7 +51,7 @@ function remove_base_directories {
 	# Move to user home directory
 	cd "$HOME" || exit
 
-	# Delete all directgories
+	# Delete all directories
 	rm -r "$HOME"/Documents "$HOME"/Music "$HOME"/Public "$HOME"/Videos "$HOME"/Desktop "$HOME"/Downloads "$HOME"/Pictures "$HOME"/Templates
 
 	# Clone this repository
@@ -75,7 +69,7 @@ function create_new_directories {
 }
 
 function update_xdg_user_dirs {
-	# Remvoe default xdg directory configuration
+	# Remove default XDG directory configuration
 	rm "$HOME"/.config/user-dirs.dirs
 	exitCodeRmUserDirs=$?
 	verify_command "removing user-dirs.dirs" $exitCodeRmUserDirs
@@ -237,7 +231,7 @@ function setupDocker {
 
 	# Setup repository
 	echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list >/dev/null
+    $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list >/dev/null
 
 	# Update Repository List
 	sudo apt update
@@ -262,4 +256,5 @@ echo -e "Tasks\n\
   - Update github ssh keys with, located in \$HOME/.ssh/id_rsa.pub
   - Adjust download folder in tools(browser) to downloads instead of Downloads
   - Use nvm to switch to desired node version
+  - verify docker and node installations
 "
