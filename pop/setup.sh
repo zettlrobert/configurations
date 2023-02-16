@@ -138,21 +138,27 @@ function install_default_packages {
 		verify_command "$package installation" $exitCode
 	done
 }
-
 install_default_packages
 
+function update_git_most_recent {
+	sudo add-apt-repository ppa:git-core/ppa -y
+	sudo apt update
+	sudo apt install git -y
+}
+update_git_most_recent
+
 function change_shell_zsh {
-	chsh -s $(which zsh)
+	chsh -s "$(which zsh)"
 	exitCode=$?
 	verify_command "changing shell to zsh" $exitCode
 }
 change_shell_zsh
 
 function install_fzf {
-	echo -e "${cyan}The following has three questions answer${NC}${purble}Y${NC}${cyan}to all${NC}"
-	cd $HOME
+	echo -e "${cyan}The following has three questions answer${NC}${purple}Y${NC}${cyan}to all${NC}"
+	cd "$HOME" || exit
 	git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
-	$HOME/.fzf/install
+	"$HOME"/.fzf/install
 }
 install_fzf
 
@@ -169,10 +175,10 @@ function set_default_terminal_emulator_kitty {
 set_default_terminal_emulator_kitty
 
 function overwrite_zsh_config {
-	rm $HOME/.zshrc
+	rm "$HOME"/.zshrc
 	cp "$HOME"/configurations/pop/assets/.zshrc "$HOME"
-	$exitCode=$?
-	verify_command "updating .zshrc" $exitCode
+	exitCode=$?
+	verify_command "updating .zshrc" "$exitCode"
 }
 
 echo -e "Tasks\n\
