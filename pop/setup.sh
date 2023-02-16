@@ -65,7 +65,7 @@ function remove_base_directories {
 function create_new_directories {
 	# Create new directory for every string in array
 	for directory in "${DIRECTORIES[@]}"; do
-		mkdir directory
+		mkdir $directory
 		exitCode=$?
 
 		verify_command "creating $directory" $exitCode
