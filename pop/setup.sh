@@ -227,6 +227,28 @@ function create_ssh_keys {
 }
 create_ssh_keys
 
+function setupDocker {
+	# Install prerequisites
+	sudo apt-get install ca-certificates curl gnupg lsb-release -y
+
+	# Add GNU Privacy Guard Key
+	sudo mkdir -p /etc/apt/keyrings
+	curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+
+	# Setup repository
+	echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list >/dev/null
+
+	# Update Repository List
+	sudo apt update
+
+	# Install Docker
+	sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin -y
+	exitCodeDockerInstall=$?
+	verify_command "installing docker and addons" $exitCodeDockerInstall
+}
+setupDocker
+
 echo -e "Tasks\n\
   - Reboot to apply changes
   - Run zap update
