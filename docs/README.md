@@ -11,4 +11,3 @@ This repository contains system documentation, configurations and some useful se
 | pop       | this will contain pop_os specific elements                                                                                      |
 | scripts   | this will contain reusable shell scripts                                                                                        |
 | dotfiles  | this will contain shareable dotfiles                                                                                            |
-
