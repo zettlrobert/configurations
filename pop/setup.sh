@@ -201,7 +201,7 @@ set_git_config
 function install_nvm {
 	cd "$HOME" || exit
 	git clone --depth 1 https://github.com/nvm-sh/nvm.git
-	"$HOME"/.nvm/install.sh
+	"$HOME"/nvm/install.sh
 	nvm install --lts
 	corepack enable && corepack prepare pnpm@latest --activate
 	pnpm setup
@@ -249,7 +249,7 @@ function dockerUserConfiguration {
 }
 dockerUserConfiguration
 
-echo -e "Tasks\n\
+echo -e "\n${purple}Tasks${NC}\n\
   - Reboot to apply changes
   - Run zap update
   - Switch Keyboard Shurtcuts, (super for workspace overview)\n\
