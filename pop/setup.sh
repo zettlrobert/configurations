@@ -204,6 +204,16 @@ function set_git_config {
 }
 set_git_config
 
+function install_nvm {
+	cd "$HOME" || exit
+	git clone --depth 1 https://github.com/nvm-sh/nvm.git
+	"$HOME"/.nvm/install.sh
+	nvm install --lts
+	corepack enable && corepack prepare pnpm@latest --activate
+	pnpm setup
+}
+install_nvm
+
 function create_ssh_keys {
 	echo -e "Please confirm defaults\n"
 	# Generate Key
@@ -215,6 +225,7 @@ function create_ssh_keys {
 	# Add generated key to ssh agent
 	ssh-add "$HOME"/.ssh/id_rsa
 }
+create_ssh_keys
 
 echo -e "Tasks\n\
   - Reboot to apply changes
@@ -222,4 +233,5 @@ echo -e "Tasks\n\
   - Switch Keyboard Shurtcuts, (super for workspace overview)\n\
   - Update github ssh keys with, located in \$HOME/.ssh/id_rsa.pub
   - Adjust download folder in tools(browser) to downloads instead of Downloads
+  - Use nvm to switch to desired node version
 "
