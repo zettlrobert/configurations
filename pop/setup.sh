@@ -249,6 +249,12 @@ function setupDocker {
 }
 setupDocker
 
+function dockerUserConfiguration {
+	sudo groupadd docker
+	sudo usermod -aG docker "$USER"
+}
+dockerUserConfiguration
+
 echo -e "Tasks\n\
   - Reboot to apply changes
   - Run zap update
