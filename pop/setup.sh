@@ -25,7 +25,7 @@ function verify_command {
 }
 
 # Welcome Message
-echo -e "Welcome to the simple installation, script enter password when prompted. \nThis script assumes you have cloned this repository"
+echo -e "Welcome to the simple installation, script enter password when prompted. \nThis script assumes you have cloned this repository\nPlease act when prompted"
 
 # Update System Dependencies and Upgrade
 sudo apt update && sudo apt upgrade -y
@@ -92,6 +92,8 @@ function install_default_packages {
 	PACKAGES=(
 		# Tools
 		"zsh"
+		"kitty"
+		"bat"
 		"ranger"
 		"ripgrep"
 		"xclip"
@@ -144,11 +146,38 @@ function change_shell_zsh {
 	exitCode=$?
 	verify_command "changing shell to zsh" $exitCode
 }
-
 change_shell_zsh
+
+function install_fzf {
+	echo -e "${cyan}The following has three questions answer${NC}${purble}Y${NC}${cyan}to all${NC}"
+	cd $HOME
+	git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+	$HOME/.fzf/install
+}
+install_fzf
+
+function install_zap {
+	zsh <(curl -s https://raw.githubusercontent.com/zap-zsh/zap/master/install.zsh)
+}
+install_zap
+
+function set_default_terminal_emulator_kitty {
+	gsettings set org.gnome.desktop.default-applications.terminal exec kitty
+	exitCode=$?
+	verify_command "kitty set as default" $exitCode
+}
+set_default_terminal_emulator_kitty
+
+function overwrite_zsh_config {
+	rm $HOME/.zshrc
+	cp "$HOME"/configurations/pop/assets/.zshrc "$HOME"
+	$exitCode=$?
+	verify_command "updating .zshrc" $exitCode
+}
 
 echo -e "Tasks\n\
   - Reboot to apply changes
+  - Run zap update
   - Switch Keyboard Shurtcuts, (super for workspace overview)\n\
   - Update github ssh keys with: .ssh/id_rsa.pub
   - Adjust download folder in tools(browser) to downloads instead of Downloads
