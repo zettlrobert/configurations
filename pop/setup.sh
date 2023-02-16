@@ -170,7 +170,7 @@ set_default_terminal_emulator_kitty
 
 function overwrite_zsh_config {
 	rm "$HOME"/.zshrc
-	cp "$HOME"/configurations/pop/assets/.zshrc "$HOME"
+	cp "$HOME"/configurations/pop/assets/.zshrc "$HOME"/
 	exitCode=$?
 	verify_command "updating .zshrc" "$exitCode"
 }
@@ -202,11 +202,15 @@ function install_nvm {
 	cd "$HOME" || exit
 	git clone --depth 1 https://github.com/nvm-sh/nvm.git
 	"$HOME"/nvm/install.sh
+}
+install_nvm
+
+function install_node {
 	nvm install --lts
 	corepack enable && corepack prepare pnpm@latest --activate
 	pnpm setup
 }
-install_nvm
+install-node
 
 function create_ssh_keys {
 	echo -e "Please confirm defaults\n"
@@ -223,7 +227,7 @@ create_ssh_keys
 
 function setupDocker {
 	# Install prerequisites
-	sudo apt-get install ca-certificates curl gnupg lsb-release -y
+	sudo apt-get install ca-certificates curl gnupg lsb-release aufs-tools cgroupfs-mount -y
 
 	# Add GNU Privacy Guard Key
 	sudo mkdir -p /etc/apt/keyrings
@@ -257,4 +261,10 @@ echo -e "\n${purple}Tasks${NC}\n\
   - Adjust download folder in tools(browser) to downloads instead of Downloads
   - Use nvm to switch to desired node version
   - verify docker and node installations
+  - adjust kitty configuration and set FiraCode as font
 "
+
+# TODO:
+# - Install JulaMono
+# - Load kitty config + kitty color scheme
+# - Ensure node installs correctly
